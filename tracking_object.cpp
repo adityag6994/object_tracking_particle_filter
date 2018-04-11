@@ -52,6 +52,18 @@ run : rosrun tracker tracking_object /home/aditya/catkin_ws/src/tracker/src/tedd
 run  : rosrun rviz rviz
 ***/
 
+/* Global Variables realted to low pass filter : with '__' */
+double __T     = 0.3;
+double __dt    = 0.1;
+double __x     = 0;
+double __y     = 0;
+double __z     = 0;
+double __roll  = 0;
+double __pitch = 0;
+double __yaw   = 0;
+double __eXYZ  = 0.0001; //Check it !
+double __eRPY  = 0.0001;
+
 typedef pcl::PointXYZ PointType;
 // typedef pcl::PointXYZRGB PointType;
 typedef pcl::PointXYZ RefPointType;
@@ -76,6 +88,23 @@ boost::shared_ptr<ParticleFilter> tracker_;
 bool new_cloud_;
 double downsampling_grid_size_;
 int counter;
+
+/*Low Pass Filter :To smoothen the pose estimate*/
+double lwoPassFilterXYZ(double x, double y0, double dt, double T){
+	double res = y0 + (x - y0) * (dt/(dt+T));
+	if((res*res) <= __eXYZ){
+		res = 0;
+	}
+	return res;
+}
+
+double lwoPassFilterRPY(double x, double y0, double dt, double T){
+	double res = y0 + (x - y0) * (dt/(dt+T));
+	if((res*res) <= __eRPY){
+		res = 0;
+	}
+	return res;
+}
 
 void filterPassThrough (const CloudConstPtr &cloud, Cloud &result)
 {
