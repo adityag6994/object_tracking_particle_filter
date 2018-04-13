@@ -62,7 +62,7 @@ double __roll  = 0;
 double __pitch = 0;
 double __yaw   = 0;
 double __eXYZ  = 0.0001; //Check it !
-double __eRPY  = 0.0001;
+double __eRPY  = 0.1;
 
 typedef pcl::PointXYZ PointType;
 // typedef pcl::PointXYZRGB PointType;
@@ -173,7 +173,6 @@ void publishObjectPose(Eigen::Affine3f &transformation)
     x=transformation.translation().x();
     y=transformation.translation().y();
     z=transformation.translation().z();
-
     // Eigen::Quaternionf quaternion(rotationMatrix);
     // quaternion_x=quaternion.x();
     // quaternion_y=quaternion.y();
@@ -183,16 +182,23 @@ void publishObjectPose(Eigen::Affine3f &transformation)
     float pitch = atan2( -rotationMatrix(2,0), std::pow( rotationMatrix(2,1)*rotationMatrix(2,1) +rotationMatrix(2,2)*rotationMatrix(2,2) ,0.5  )  );
     float yaw = atan2( rotationMatrix(1,0),rotationMatrix(0,0) );
     float pi = 3.14;
-
-    /* Apply Filter Here*/
-
     // std::cout<<"x: " << x <<std::endl;
     // std::cout<<"y: " << y <<std::endl;
     // std::cout<<"z: " << z <<std::endl;
     // std::cout<<"roll is:" << (roll*180)/pi << " | " << roll << std::endl;
     // std::cout<<"pitch is:" << (pitch*180)/pi << " | " << pitch << std::endl;
     // std::cout<<"yaw is:" << (yaw*180)/pi << " | " << yaw << std::endl;
-    std::cout << x << " " << y << " " << " " << z << " " << (roll*180)/pi << " " << (pitch*180)/pi << " " << (yaw*180)/pi << std::endl;
+    // std::cout << x << " " << y << " " << " " << z << " " << (roll*180)/pi << " " << (pitch*180)/pi << " " << (yaw*180)/pi << std::endl;
+	
+    // After applying low pass filter
+    __x = lwoPassFilterXYZ(x, __x, __dt, __T);
+    __y = lwoPassFilterXYZ(x, __y, __dt, __T);
+    __z = lwoPassFilterXYZ(x, __z, __dt, __T);
+    __roll  = lwoPassFilterRPY((roll*180)/pi, __roll, __dt, __T);
+    __pitch = lwoPassFilterRPY((pitch*180)/pi, __pitch, __dt, __T);
+    __yaw   = lwoPassFilterRPY((yaw*180)/pi, __yaw, __dt, __T);
+    // std::cout << x << " " << y << " " << z << " " << (roll*180)/pi << " " << (pitch*180)/pi << " " << (yaw*180)/pi <<  " " << __x <<  " " << __y <<  " " << __z << " " << (__roll*180)/pi << " " << (__pitch*180)/pi << " " << (__yaw*180)/pi << std::endl;
+    std::cout << x << " " << y << " " << z << " " << (roll*180)/pi << " " << (pitch*180)/pi << " " << (yaw*180)/pi <<  " " << __x <<  " " << __y <<  " " << __z << " " << __roll << " " << (__pitch) << " " << (__yaw) << std::endl;
 	
     // std::cout<<"quaternion_x is:" <<quaternion_x <<std::endl;
     // std::cout<<"quaternion_y is:" <<quaternion_y <<std::endl;
