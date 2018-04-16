@@ -35,15 +35,28 @@ with open(sys.argv[1],'r') as csvfile:
         roll.append((float(row[3])))
         pitch.append((float(row[4])))
         yaw.append(float(row[5]))
-        roll_lpf.append((float(row[3])))
-        pitch_lpf.append((float(row[4])))
-        yaw_lpf.append(float(row[5]))     
+        roll_lpf.append((float(row[9])))
+        pitch_lpf.append((float(row[10])))
+        yaw_lpf.append(float(row[11]))     
+        # if(count == 300):
+            # break;
         # roll.append((float(row[3]))*180/pi )
         # pitch.append((float(row[4]))*180/pi)
         # yaw.append(float(row[5])*180/pi)
         # roll_lpf.append((float(row[3]))*180/pi )
         # pitch_lpf.append((float(row[4]))*180/pi)
         # yaw_lpf.append(float(row[5])*180/pi)     
+
+k = []
+current_roll = []
+count_reference = 0
+with open(sys.argv[2],'r') as csvfile:
+    plots = csv.reader(csvfile, delimiter=' ')
+    for row in plots:
+        k.append(count_reference)
+        count_reference = count_reference + 1
+        current_roll.append((float(row[0]))-95)
+        # current_angle.append(((float(row[0]) - 65)*90/80)-45)
 
 mean_x = sum(x)/count
 mean_y = sum(y)/count
@@ -76,9 +89,12 @@ f, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, sharex=True, sharey=True)
 l1,=ax1.plot(i,roll, color='r', label='Blue stars')
 l2,=ax2.plot(i,pitch, color='g')
 l3,=ax3.plot(i,yaw, color='b')
+lr,=ax3.plot(k,current_roll, color='r')
 l4,=ax4.plot(i,roll_lpf, color='r', label='Blue stars')
 l5,=ax5.plot(i,pitch_lpf, color='g')
 l6,=ax6.plot(i,yaw_lpf, color='b')
+lr,=ax6.plot(k,current_roll, color='r')
+
 ax1.set_title('Eurler Angles (Degre) vs Count (5 fps)')
 plt.legend([l1, l2, l3, l4, l5, l6],["Pitch", "Yaw", "Roll","PitchLPF", "YawLPF", "RollLPF"])
 ax1.axhline(y=mean_roll,c="y",linewidth=1.5,zorder=0)
@@ -89,6 +105,7 @@ ax5.axhline(y=mean_pitch_lpf,c="y",linewidth=1.5,zorder=0)
 ax6.axhline(y=mean_yaw_lpf,c="y",linewidth=1.5,zorder=0)
 plt.show()
 
+exit()
 f, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, sharex=True, sharey=True)
 l1,=ax1.plot(i,x, color='r', label='Blue stars')
 l2,=ax2.plot(i,y, color='g')

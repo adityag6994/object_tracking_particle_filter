@@ -192,8 +192,8 @@ void publishObjectPose(Eigen::Affine3f &transformation)
 	
     // After applying low pass filter
     __x = lwoPassFilterXYZ(x, __x, __dt, __T);
-    __y = lwoPassFilterXYZ(x, __y, __dt, __T);
-    __z = lwoPassFilterXYZ(x, __z, __dt, __T);
+    __y = lwoPassFilterXYZ(y, __y, __dt, __T);
+    __z = lwoPassFilterXYZ(z, __z, __dt, __T);
     __roll  = lwoPassFilterRPY((roll*180)/pi, __roll, __dt, __T);
     __pitch = lwoPassFilterRPY((pitch*180)/pi, __pitch, __dt, __T);
     __yaw   = lwoPassFilterRPY((yaw*180)/pi, __yaw, __dt, __T);
