@@ -32,6 +32,7 @@
 #include <pcl/io/ply_io.h>
 #include <iostream>
 #include <fstream>
+#include <time.h>
 
 struct pose{
 	double x;
@@ -63,6 +64,10 @@ double __pitch = 0;
 double __yaw   = 0;
 double __eXYZ  = 0.0001; //Check it !
 double __eRPY  = 0.1;
+
+/* To get the fps */
+int __num_frames = 0, __current_count = 0;
+time_t start, endl;
 
 typedef pcl::PointXYZ PointType;
 // typedef pcl::PointXYZRGB PointType;
@@ -200,7 +205,7 @@ void publishObjectPose(Eigen::Affine3f &transformation)
     // std::cout << x << " " << y << " " << z << " " << (roll*180)/pi << " " << (pitch*180)/pi << " " << (yaw*180)/pi <<  " " << __x <<  " " << __y <<  " " << __z << " " << (__roll*180)/pi << " " << (__pitch*180)/pi << " " << (__yaw*180)/pi << std::endl;
     std::cout << x << " " << y << " " << z << " " << (roll*180)/pi << " " << (pitch*180)/pi << " " << (yaw*180)/pi <<  " " << __x <<  " " << __y <<  " " << __z << " " << __roll << " " << (__pitch) << " " << (__yaw) << std::endl;
 	
-    // std::cout<<"quaternion_x is:" <<quaternion_x <<std::endl;
+	// std::cout<<"quaternion_x is:" <<quaternion_x <<std::endl;
     // std::cout<<"quaternion_y is:" <<quaternion_y <<std::endl;
     // std::cout<<"quaternion_z is:" <<quaternion_z <<std::endl;
     // std::cout<<"quaternion_w is:" <<quaternion_w <<std::endl;
@@ -491,7 +496,7 @@ int main(int argc, char **argv)
 
     }
     // myfile.close();
-
+    std::cout << "finished!!" << std::endl;
      /**/
     return 0;
 }

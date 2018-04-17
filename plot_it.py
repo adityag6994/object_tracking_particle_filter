@@ -1,31 +1,27 @@
-import matplotlib.pyplot as plt
-import csv
-import sys
+from matplotlib.pyplot import figure, show
+from numpy import arange, sin, pi
 
-i = [] 
-current_angle = []
+t = arange(0.0, 1.0, 0.01)
 
-pi = 3.14
-count = 0
+fig = figure(1)
 
-# with open('/home/aditya/catkin_ws/log.txt','r') as csvfile:
-with open(sys.argv[1],'r') as csvfile:
-    plots = csv.reader(csvfile, delimiter=' ')
-    for row in plots:
-        # print('count => ',count, ' ' ,row)
-        i.append(count)
-        count = count + 1
-        current_angle.append(((float(row[0]))))
-        # current_angle.append(((float(row[0]) - 65)*90/80)-45)
+ax1 = fig.add_subplot(211)
+ax1.plot(t, sin(2*pi*t))
+ax1.grid(True)
+ax1.set_ylim((-2, 2))
+ax1.set_ylabel('1 Hz')
+ax1.set_title('A sine wave or two')
+
+for label in ax1.get_xticklabels():
+    label.set_color('r')
 
 
-f, (ax1) = plt.subplots(1, sharex=True, sharey=True)
-l1,=ax1.plot(i,current_angle, color='r', label='Blue stars')
-ax1.set_title('Eurler Angles (Degre) vs Count (5 fps)')
-plt.legend([l1],["current able"])
-print(current_angle)
-plt.show()
+ax2 = fig.add_subplot(212)
+ax2.plot(t, sin(2*2*pi*t))
+ax2.grid(True)
+ax2.set_ylim((-2, 2))
+l = ax2.set_xlabel('Hi mom')
+l.set_color('g')
+l.set_fontsize('large')
 
-power_smooth = spline()
-# 65  : -45
-# 140 :  45
+show()
