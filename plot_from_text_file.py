@@ -54,9 +54,14 @@ with open(sys.argv[2],'r') as csvfile:
     plots = csv.reader(csvfile, delimiter=' ')
     for row in plots:
         k.append(count_reference)
-        count_reference = count_reference + 0.5
-        current_roll.append((float(row[0]))-145)
+        count_reference = (float(count_reference) + 0.075)
+        current_roll.append((float(row[0]))-140)
         # current_angle.append(((float(row[0]) - 65)*90/80)-45)
+iii=[]
+for ii in i:
+    iii.append(float(ii)/10)
+    
+    # print(ii, ' ', iii[ii])
 
 mean_x = sum(x)/count
 mean_y = sum(y)/count
@@ -87,18 +92,18 @@ print('Mean yaw_lpf   : ', mean_yaw_lpf)
 
 
 f, (ax1, ax2, ax3) = plt.subplots(3, sharex=True, sharey=True)
-l1,=ax1.plot(i,roll, color='r', label='Blue stars')
-l2,=ax2.plot(i,pitch, color='r')
-l3,=ax3.plot(i,yaw, color='r')
+l1,=ax1.plot(iii,roll, color='r', label='Blue stars')
+l2,=ax2.plot(iii,pitch, color='r')
+l3,=ax3.plot(iii,yaw, color='r')
 lr,=ax3.plot(k,current_roll, color='g')
-l4,=ax1.plot(i,roll_lpf, color='b', label='Blue stars')
-l5,=ax2.plot(i,pitch_lpf, color='b')
-l6,=ax3.plot(i,yaw_lpf, color='b')
+l4,=ax1.plot(iii,roll_lpf, color='b', label='Blue stars')
+l5,=ax2.plot(iii,pitch_lpf, color='b')
+l6,=ax3.plot(iii,yaw_lpf, color='b')
 lrLPF,=ax3.plot(k,current_roll, color='g')
 ax1.set_ylabel('Anlgles (in degree)')
 ax2.set_ylabel('Anlgles (in degree)')
 ax3.set_ylabel('Anlgles (in degree)')
-ax3.set_xlabel('Count 5fps')
+ax3.set_xlabel('Time (s)')
 
 
 ax1.set_title('Yaw (Degre)')
@@ -112,7 +117,9 @@ l14 = ax1.axhline(y=mean_roll_lpf,c="g",linewidth=1.5,zorder=0)
 l15 = ax2.axhline(y=mean_pitch_lpf,c="g",linewidth=1.5,zorder=0)
 # l16 = ax6.axhline(y=mean_yaw_lpf,c="y",linewidth=1.5,zorder=0)
 
-
+print(len(k), ' ' , len(iii))
+for q in range(1,100):
+    print(k[q], ' ', iii[q])
 # plt.legend([l1, l2, l3, l4, l5, l6],["Pitch", "Yaw", "Roll","PitchLPF", "YawLPF", "RollLPF"])
 ax1.legend([l1,l11,l4],["Estimate","Reference","After LPF"])
 ax2.legend([l2,l12,l5],["Estimate","Reference","After LPF"])

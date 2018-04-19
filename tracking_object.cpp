@@ -5,6 +5,7 @@
 #include <tf/transform_broadcaster.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud_conversion.h>
+#include <geometry_msgs/Point.h>
 
 #include <boost/format.hpp>
 
@@ -84,6 +85,7 @@ sensor_msgs::PointCloud2 particle_cloud_msg, result_cloud_msg, down_cloud_msg;
 ros::Publisher pub_praticles_cloud,pub_result_cloud, pub_down_cloud;
 ros::Publisher pub_pose;
 boost::shared_ptr<pcl::PointCloud<PointType> > result_cloud;
+ros::Publisher current_xyz_plot, current_rpy_plot;
 
 CloudPtr cloud_pass_;
 CloudPtr cloud_pass_downsampled_;
@@ -93,6 +95,10 @@ boost::shared_ptr<ParticleFilter> tracker_;
 bool new_cloud_;
 double downsampling_grid_size_;
 int counter;
+
+//for plotting the results
+geometry_msgs::Point current_xyz;
+geometry_msgs::Point current_rpy;
 
 /*Low Pass Filter :To smoothen the pose estimate*/
 double lwoPassFilterXYZ(double x, double y0, double dt, double T){
@@ -205,6 +211,18 @@ void publishObjectPose(Eigen::Affine3f &transformation)
     // std::cout << x << " " << y << " " << z << " " << (roll*180)/pi << " " << (pitch*180)/pi << " " << (yaw*180)/pi <<  " " << __x <<  " " << __y <<  " " << __z << " " << (__roll*180)/pi << " " << (__pitch*180)/pi << " " << (__yaw*180)/pi << std::endl;
     std::cout << x << " " << y << " " << z << " " << (roll*180)/pi << " " << (pitch*180)/pi << " " << (yaw*180)/pi <<  " " << __x <<  " " << __y <<  " " << __z << " " << __roll << " " << (__pitch) << " " << (__yaw) << std::endl;
 	
+	//To plot in real time
+	current_xyz.x = __x;
+	current_xyz.y = __y;
+	current_xyz.z = __z;
+	current_rpy.x = __roll;
+	current_rpy.y = __pitch;
+	current_rpy.z = __yaw;
+
+	current_xyz_plot.publish(current_xyz);
+	current_rpy_plot.publish(current_rpy);
+
+
 	// std::cout<<"quaternion_x is:" <<quaternion_x <<std::endl;
     // std::cout<<"quaternion_y is:" <<quaternion_y <<std::endl;
     // std::cout<<"quaternion_z is:" <<quaternion_z <<std::endl;
@@ -357,6 +375,11 @@ int main(int argc, char **argv)
     pub_praticles_cloud=nh.advertise<sensor_msgs::PointCloud2>("particles_cloud",1);
     pub_result_cloud=nh.advertise<sensor_msgs::PointCloud2>("result_cloud",1);
     pub_down_cloud=nh.advertise<sensor_msgs::PointCloud2>("cloud_pass_downsampled_",1);
+    
+    //plot publishes
+    current_xyz_plot = nh.advertise<geometry_msgs::Point>("current_xyz",1);
+    current_rpy_plot = nh.advertise<geometry_msgs::Point>("current_rpy",1);
+
     // pub_pose = nh.advertise<pose>("current_pose", 1);
     target_cloud.reset(new Cloud());
     pcl::PLYReader PLYFileReader;
