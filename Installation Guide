@@ -1,0 +1,23 @@
+Install Picoflexx Firmaware
+---------------------------
+Go to : https://pmdtec.com/picofamily/software/
+Install the software as per your system.
+<You will need password for this, which is written on the box of camera>
+
+In the Readme file for PMD Picoflexx Camera:
+For Linux : Please extract the Linux package (will result in a “libroyale-3.15.0.X-LINUX-x86-64Bit” or
+“libroyale-3.15.0.X-LINUX-x86-32Bit” folder). Then transfer the complete folder to your com-
+puter.
+Make sure that you have proper permissions to the USB device. The installation package
+contains a proper rules file which can be used. It is located in the /driver/udev directory,
+please refer to the README file in that directory for more details.
+
+So we'll do as instructed,
+Go to ../libroyale-3.15.0.50-LINUX-x86-64Bit/driver/udev and do as instructed in README:
+From the ../libroyale-3.15.0.50-LINUX-x86-64Bit/driver/udev folder run the command: sudo cp 10-royale-ubuntu.rules /etc/udev/rules.d
+
+Check if camera is working:
+Go to ../libroyale-3.15.0.50-LINUX-x86-64Bit/bin and run the following command in terminal : ./royaleviewer.sh
+Note: Please note that libroyale version 3.8 perfectly works for Ubuntu 14. I faced some problems with libroyale version 3.11
+(which is the latest), hence I would reccommend to use libroyale version 3.8 if you are using Ubuntu 14.
+
