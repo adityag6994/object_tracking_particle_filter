@@ -1,0 +1,29 @@
+Get PCL working in ROS
+----------------------
+sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
+sudo apt-get update
+sudo apt-get install libpcl-all
+
+Check PCL
+---------
+Create a folder 'test_pcl'
+Create file and copy the code from : http://pointclouds.org/documentation/tutorials/passthrough.php#passthrough
+Create build folder inside that folder :
+mkdir build & cd build
+Compile the source code
+cmake .. & make
+
+PCL is working on your computer now!
+
+Getting it working with ros
+---------------------------
+Dependencies :
+sudo apt-get install ros-indigo-moveit-planners-ompl 
+sudo apt-get install ros-indigo-ompl
+
+PCL-ROS
+-------
+sudo apt-get install ros-indigo-pcl-ros
+
+Good Place to learn PCL : https://github.com/hsean/Capstone-44-Object-Segmentation/wiki
+
