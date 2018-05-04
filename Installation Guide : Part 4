@@ -29,7 +29,12 @@ one which is mentioned above)
 
 (See Part 3 for more.)
 Runt the tracker, in a new terminal
+rosrun tracker tracking_object <location of the .pcd file>
 rosrun tracker tracking_object data/teddy.pcd 
+
+Few things about above command:
+-------------------------------
 Add another point cloud tab in the same rviz and select the topic as 'result_cloud'
+The last argment is the saved point cloud which should somewhere saved on your computer.
 
 You should see everything working!
