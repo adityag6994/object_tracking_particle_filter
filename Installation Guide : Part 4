@@ -1,0 +1,35 @@
+Finally we will run the tracker 
+------------------------------
+
+Go to catkin_ws folder:
+cd ~/catkin_ws
+
+Plugin the camers 
+( Re-plug it if it does not work!                                                              )
+( Its better to use USB 3 and not USB 2                                                        )     
+( Sometimes, if there is a screen attached, it might create an issue, so try it without screen )
+
+Source the worksapce :
+source devel/setup.bash
+
+Run the camera:
+roslaunch royale_in_ros camera_driver.launch
+
+Run the Rviz Rviz:
+rosrun rviz rviz
+Add the Point Cloud 2
+
+Add a PointCloud2 display type and Topic as /royale_camera_driver/point_cloud
+(When the Rviz window opens, see lower left side, there will be Add tab, from the list select PointCloud2
+Then in the topic tab select the one which is described)
+
+Change the frame to royale_camera_optical_frame
+(When the RViz windows open, see right upper corner, where there will be window with frame, change the wondow to
+one which is mentioned above)
+
+(See Part 3 for more.)
+Runt the tracker, in a new terminal
+rosrun tracker tracking_object data/teddy.pcd 
+Add another point cloud tab in the same rviz and select the topic as 'result_cloud'
+
+You should see everything working!
