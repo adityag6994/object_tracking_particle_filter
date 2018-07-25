@@ -7,7 +7,7 @@ cd ~/catkin_ws
 Plugin the camers 
 ( Re-plug it if it does not work!                                                              )
 ( Its better to use USB 3 and not USB 2                                                        )     
-( Sometimes, if there is a screen attached, it might create an issue, so try it without screen )
+( Sometimes, if there is a screen attached, it might create an issue, so try it without screen/projecttor )
 
 Source the worksapce :
 source devel/setup.bash
